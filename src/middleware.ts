@@ -24,7 +24,7 @@ export function middleware(request: NextRequest) {
     refreshToken
   ) {
     const url = new URL("/logout", request.url);
-    url.searchParams.set("refreshToken", refreshToken);
+    // url.searchParams.set("refreshToken", refreshToken);
     return NextResponse.redirect(url);
   }
 }
