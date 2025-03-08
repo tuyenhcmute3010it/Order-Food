@@ -38,15 +38,33 @@ type PaginationLinkProps = {
   isActive?: boolean;
 } & Pick<ButtonProps, "size"> &
   React.ComponentProps<typeof Link>;
-
+// const PaginationLink = ({
+//   className,
+//   isActive,
+//   size = "icon",
+//   ...props
+// }: PaginationLinkProps) => (
+//   <a
+//     aria-current={isActive ? "page" : undefined}
+//     className={cn(
+//       buttonVariants({
+//         variant: isActive ? "outline" : "ghost",
+//         size,
+//       }),
+//       className
+//     )}
+//     {...props}
+//   />
+// );
 const PaginationLink = ({
   className,
   isActive,
   size = "icon",
+  href, // Lấy href từ props
   ...props
 }: PaginationLinkProps) => (
-  <a
-    aria-current={isActive ? "page" : undefined}
+  <Link
+    href={href}
     className={cn(
       buttonVariants({
         variant: isActive ? "outline" : "ghost",
@@ -54,9 +72,11 @@ const PaginationLink = ({
       }),
       className
     )}
+    aria-current={isActive ? "page" : undefined}
     {...props}
   />
 );
+
 PaginationLink.displayName = "PaginationLink";
 
 const PaginationPrevious = ({

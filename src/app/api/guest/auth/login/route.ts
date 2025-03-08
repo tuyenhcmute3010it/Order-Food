@@ -1,13 +1,13 @@
-import authApiRequest from "@/apiRequests/auth";
-import { LoginBodyType } from "@/schemaValidations/auth.schema";
 import { cookies } from "next/headers";
 import jwt from "jsonwebtoken";
 import { HttpError } from "@/lib/http";
+import { GuestLoginBodyType } from "@/schemaValidations/guest.schema";
+import guestApiRequest from "@/apiRequests/guest";
 export async function POST(request: Request) {
-  const body = (await request.json()) as LoginBodyType;
+  const body = (await request.json()) as GuestLoginBodyType;
   const cookieStore = cookies();
   try {
-    const { payload } = await authApiRequest.sLogin(body);
+    const { payload } = await guestApiRequest.sLogin(body);
     const { accessToken, refreshToken } = payload.data;
     const decodedAccessToken = jwt.decode(accessToken) as { exp: number };
     const decodedRefreshToken = jwt.decode(refreshToken) as { exp: number };
@@ -18,7 +18,7 @@ export async function POST(request: Request) {
       secure: true,
       expires: decodedAccessToken.exp * 1000,
     });
-    (await cookieStore).set("refreshToken", refreshToken, {
+    (await cookieStore).set("refreshToken", accessToken, {
       path: "/",
       httpOnly: true,
       sameSite: "lax",

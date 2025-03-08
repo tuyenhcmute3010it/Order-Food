@@ -1,4 +1,5 @@
 import authApiRequest from "@/apiRequests/auth";
+import guestApiRequest from "@/apiRequests/guest";
 import { cookies } from "next/headers";
 export async function POST() {
   const cookieStore = cookies();
@@ -17,7 +18,7 @@ export async function POST() {
     );
   }
   try {
-    const result = await authApiRequest.sLogout({
+    const result = await guestApiRequest.sLogout({
       accessToken,
       refreshToken,
     });

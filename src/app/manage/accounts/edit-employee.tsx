@@ -35,7 +35,6 @@ export default function EditEmployee({
   setId: (value: number | undefined) => void;
   onSubmitSuccess?: () => void;
 }) {
-  console.log(id);
   const [file, setFile] = useState<File | null>(null);
   const avatarInputRef = useRef<HTMLInputElement | null>(null);
   const { data } = useGetAccount({
@@ -69,6 +68,11 @@ export default function EditEmployee({
   useEffect(() => {
     if (data) {
       const { name, avatar, email } = data.payload.data;
+      console.log("Dữ liệu reset:", {
+        name,
+        avatar,
+        email,
+      });
       form.reset({
         name,
         avatar: avatar ?? undefined,
@@ -105,7 +109,9 @@ export default function EditEmployee({
         description: result.payload.message,
       });
       reset();
-      onSubmitSuccess && onSubmitSuccess();
+      if (onSubmitSuccess) {
+        onSubmitSuccess();
+      }
     } catch (error) {
       handleErrorApi({
         error,
