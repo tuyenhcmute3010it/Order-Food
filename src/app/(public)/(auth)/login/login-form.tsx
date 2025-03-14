@@ -17,9 +17,13 @@ import { useLoginMutation } from "@/queries/useAuth";
 import { toast } from "@/components/ui/use-toast";
 import { handleErrorApi } from "@/lib/utils";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useAppContext } from "@/components/app-provider";
 export default function LoginForm() {
   const loginMutation = useLoginMutation();
   const router = useRouter();
+  const [isAuth, setIsAuth] = useState(false);
+  const { role, setRole } = useAppContext();
   const form = useForm<LoginBodyType>({
     resolver: zodResolver(LoginBody),
     defaultValues: {
@@ -34,6 +38,8 @@ export default function LoginForm() {
     }
     try {
       const result = await loginMutation.mutateAsync(data);
+      setRole(result.payload.data.account.role); // Đúng rồi!
+      setIsAuth(true); // Cập nhật trạng thái
       router.push("/");
       toast({
         description: result.payload.message,

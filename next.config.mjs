@@ -1,3 +1,5 @@
+import { hostname } from "os";
+
 const nextConfig = {
   images: {
     remotePatterns: [
@@ -5,6 +7,10 @@ const nextConfig = {
         protocol: "http",
         hostname: "localhost",
         port: "4000",
+        pathname: "/**",
+      },
+      {
+        hostname: "via.placeholder.com",
         pathname: "/**",
       },
     ],

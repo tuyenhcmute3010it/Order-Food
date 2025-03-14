@@ -3,11 +3,15 @@ import { UseFormSetError } from "react-hook-form";
 import { twMerge } from "tailwind-merge";
 import { EntityError } from "./http";
 import { toast } from "@/components/ui/use-toast";
-import { DishStatus, OrderStatus, TableStatus } from "@/constants/type";
+import { DishStatus, OrderStatus, Role, TableStatus } from "@/constants/type";
 import envConfig from "@/config";
 import jwt from "jsonwebtoken";
 import authApiRequest from "@/apiRequests/auth";
+import { format } from "date-fns";
 import exp from "constants";
+import { TokenPayload } from "@/types/jwt.types";
+import guestApiRequest from "@/apiRequests/guest";
+import { BookX, CookingPot, HandCoins, Loader, Truck } from "lucide-react";
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
@@ -68,17 +72,11 @@ export const checkAndRefreshToken = async (param?: {
   // Vi de moi lan ma checkAndRefreshToken() duoc goi thi chung ta se co mot access va refresh token moi
   // tranh hien tuong bug no lay access va refresh token cu o lan dau roi goi cho cac lan goi tiep theo
   const accessToken = getAccessTokenFromLocalStorage();
-  const RefreshToken = getRefreshTokenFromLocalStorage();
+  const refreshToken = getRefreshTokenFromLocalStorage();
   // Chua dang nhap thi cung khong cho chay
-  if (!accessToken || !RefreshToken) return;
-  const decodedAccessToken = jwt.decode(accessToken) as {
-    exp: number;
-    iat: number;
-  };
-  const decodedRefreshToken = jwt.decode(RefreshToken) as {
-    exp: number;
-    iat: number;
-  };
+  if (!accessToken || !refreshToken) return;
+  const decodedAccessToken = decodeToken(accessToken);
+  const decodedRefreshToken = decodeToken(refreshToken);
   //Thoi diem het han cua token tinh theo epoch time(s)
   // Con khi cac ban dung cu phap new Date().getTime() thi no se tra ve epoch time (ms)
   const now = Math.round(new Date().getTime() / 1000);
@@ -99,7 +97,12 @@ export const checkAndRefreshToken = async (param?: {
   ) {
     // goi api refresh token
     try {
-      const res = await authApiRequest.refreshToken();
+      const role = decodedRefreshToken.role;
+
+      const res =
+        role === Role.Guest
+          ? await guestApiRequest.refreshToken()
+          : await authApiRequest.refreshToken();
       setAccessTokenToLocalStorage(res.payload.data.accessToken);
       setRefreshTokenToLocalStorage(res.payload.data.refreshToken);
       param?.onSuccess && param.onSuccess();
@@ -168,4 +171,41 @@ export const getTableLink = ({
   return (
     envConfig.NEXT_PUBLIC_URL + "/tables/" + tableNumber + "?token=" + token
   );
+};
+
+export const decodeToken = (token: string) => {
+  return jwt.decode(token) as TokenPayload;
+};
+
+export function removeAccents(str: string) {
+  return str
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/đ/g, "d")
+    .replace(/Đ/g, "D");
+}
+
+export const simpleMatchText = (fullText: string, matchText: string) => {
+  return removeAccents(fullText.toLowerCase()).includes(
+    removeAccents(matchText.trim().toLowerCase())
+  );
+};
+
+export const formatDateTimeToLocaleString = (date: string | Date) => {
+  return format(
+    date instanceof Date ? date : new Date(date),
+    "HH:mm:ss dd/MM/yyyy"
+  );
+};
+
+export const formatDateTimeToTimeString = (date: string | Date) => {
+  return format(date instanceof Date ? date : new Date(date), "HH:mm:ss");
+};
+
+export const OrderStatusIcon = {
+  [OrderStatus.Pending]: Loader,
+  [OrderStatus.Processing]: CookingPot,
+  [OrderStatus.Rejected]: BookX,
+  [OrderStatus.Delivered]: Truck,
+  [OrderStatus.Paid]: HandCoins,
 };

@@ -1,46 +1,123 @@
 "use client";
-
-import { getAccessTokenFromLocalStorage } from "@/lib/utils";
+import { useAppContext } from "@/components/app-provider";
+import { Role } from "@/constants/type";
+import {
+  cn,
+  getAccessTokenFromLocalStorage,
+  handleErrorApi,
+} from "@/lib/utils";
+import { useLogoutMutation } from "@/queries/useAuth";
+import { RoleType } from "@/types/jwt.types";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
 
-const menuItems = [
+const menuItems: {
+  title: string;
+  href: string;
+  role?: RoleType[];
+  hideWhenLogin?: boolean;
+}[] = [
   {
-    title: "Món ăn",
-    href: "/menu", // auRequired = undefine nghia la dang nhap hay chua deu cho hien thi
+    title: "Trang chủ",
+    href: "/", // auRequired = undefine nghia la dang nhap hay chua deu cho hien thi
   },
   {
-    title: "Đơn hàng",
-    href: "/orders",
+    title: "Menu",
+    href: "/guest/menu",
+    role: [Role.Guest],
+  },
+  {
+    title: "Order",
+    href: "/guest/orders",
+    role: [Role.Guest],
   },
   {
     title: "Đăng nhập",
     href: "/login",
-    authRequired: false, // khi false la chua dang nhap thi se hien thi
+    hideWhenLogin: true,
   },
   {
     title: "Quản lý",
     href: "/manage/dashboard",
-    authRequired: true, // true nghia la dang nhap roi moi hien thi
+    role: [Role.Owner, Role.Employee],
   },
 ];
 
 export default function NavItems({ className }: { className?: string }) {
   const [isAuth, setIsAuth] = useState(false);
+  const { role, setRole } = useAppContext();
   useEffect(() => {
-    setIsAuth(Boolean(getAccessTokenFromLocalStorage()));
+    const token = getAccessTokenFromLocalStorage();
+    setIsAuth(Boolean(token));
   }, []);
-  return menuItems.map((item) => {
-    if (
-      (item.authRequired === false && isAuth) ||
-      (item.authRequired === true && !isAuth)
-    )
-      return null;
+  const logoutMutation = useLogoutMutation();
+  const router = useRouter();
+  const logout = async () => {
+    if (logoutMutation.isPending) return;
 
-    return (
-      <Link href={item.href} key={item.href} className={className}>
-        {item.title}
-      </Link>
-    );
-  });
+    try {
+      await logoutMutation.mutateAsync();
+      setRole();
+      router.push("/");
+    } catch (error: any) {
+      handleErrorApi({
+        error,
+      });
+    }
+  };
+  return (
+    <>
+      {menuItems.map((item) => {
+        // Truong hop dang nhap thi chi hien thi menu dang nhap
+        const isAuth = item.role && role && item.role.includes(role);
+        // Truong hop menu item co the hien thi du cho da dang nhap hay chua
+        const canShow =
+          (item.role === undefined && !item.hideWhenLogin) ||
+          (!role && item.hideWhenLogin);
+        if (isAuth || canShow) {
+          return (
+            <Link href={item.href} key={item.href} className={className}>
+              {item.title}
+            </Link>
+          );
+        }
+        return null;
+      })}
+      {role && (
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <div className={cn(className, "cursor-pointer")}>Đăng suất</div>
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>
+                Are you absolutely sure Logout?
+              </AlertDialogTitle>
+              <AlertDialogDescription>
+                This action cannot be undone. This will permanently delete your
+                order and remove your data from our servers.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction onClick={logout}>Continue</AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      )}
+    </>
+  );
 }

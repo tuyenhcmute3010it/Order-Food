@@ -25,7 +25,7 @@ const authApiRequest = {
       },
       {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          Authorization: `Bearer ${body.accessToken}}`,
         },
       }
     ),
