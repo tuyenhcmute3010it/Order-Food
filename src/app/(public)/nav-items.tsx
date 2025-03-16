@@ -35,10 +35,6 @@ const menuItems: {
     href: "/", // auRequired = undefine nghia la dang nhap hay chua deu cho hien thi
   },
   {
-    title: "Setting",
-    href: "/setting",
-  },
-  {
     title: "Menu",
     href: "/guest/menu",
     role: [Role.Guest],

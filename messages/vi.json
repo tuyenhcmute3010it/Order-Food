@@ -1,0 +1,13 @@
+{
+  "HomePage": {
+    "title": "Nhà hàng Savannah"
+  },
+  "Login": {
+    "title": "Đăng Nhập"
+  },
+  "SwitchLanguage": {
+    "title": "Chuyển ngôn ngữ",
+    "en": "Tiếng Anh",
+    "vi": "Tiếng Việt"
+  }
+}

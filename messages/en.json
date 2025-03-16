@@ -1,0 +1,13 @@
+{
+  "HomePage": {
+    "title": "Savannah Restaurant!"
+  },
+  "Login": {
+    "title": "Login"
+  },
+  "SwitchLanguage": {
+    "title": "Switch Language",
+    "en": "English",
+    "vi": "Vietnamese"
+  }
+}
