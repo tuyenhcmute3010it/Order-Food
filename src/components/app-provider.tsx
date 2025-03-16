@@ -9,6 +9,8 @@ import {
   getAccessTokenFromLocalStorage,
   getRefreshTokenFromLocalStorage,
 } from "@/lib/utils";
+import { Socket } from "socket.io-client";
+import ListenLogoutSocket from "./listen-logout-socket";
 
 // gc : 0
 // staleTime
@@ -36,6 +38,7 @@ export default function AppProvider({
   children: React.ReactNode;
 }) {
   const [role, setRoleState] = useState<RoleType | undefined>();
+
   useEffect(() => {
     if (accessToken) {
       const decoded = decodeToken(accessToken);
@@ -50,6 +53,7 @@ export default function AppProvider({
       <QueryClientProvider client={queryClient}>
         {children}
         <RefreshToken />
+        <ListenLogoutSocket />
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
     </AppContext.Provider>

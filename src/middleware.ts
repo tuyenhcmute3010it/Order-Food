@@ -6,6 +6,7 @@ import { Role } from "./constants/type";
 const guestPath = ["/guest"];
 const unAuthPaths = ["/login"];
 const managePaths = ["/manage"];
+const onlyOwnerPaths = ["/manage/accounts"];
 const privatePaths = [...managePaths, ...guestPath];
 
 // This function can be marked `async` if using `await` inside
@@ -45,8 +46,16 @@ export function middleware(request: NextRequest) {
     const isNotGuestGoToGuestPath =
       role !== Role.Guest &&
       guestPath.some((path) => pathname.startsWith(path));
+    // Khong phai Owner nhung co tinh truy cap vao route owner
+    const isNotOwnerGoToOwnerPath =
+      role !== Role.Owner &&
+      onlyOwnerPaths.some((path) => pathname.startsWith(path));
 
-    if (isGuestGoToManagePath || isNotGuestGoToGuestPath) {
+    if (
+      isGuestGoToManagePath ||
+      isNotGuestGoToGuestPath ||
+      isNotOwnerGoToOwnerPath
+    ) {
       return NextResponse.redirect(new URL("/", request.url));
     }
     return NextResponse.next();

@@ -8,7 +8,6 @@ import envConfig from "@/config";
 import jwt from "jsonwebtoken";
 import authApiRequest from "@/apiRequests/auth";
 import { format } from "date-fns";
-import exp from "constants";
 import { TokenPayload } from "@/types/jwt.types";
 import guestApiRequest from "@/apiRequests/guest";
 import { BookX, CookingPot, HandCoins, Loader, Truck } from "lucide-react";
@@ -61,12 +60,13 @@ export const setRefreshTokenToLocalStorage = (value: string) => {
 };
 export const removeTokenFromLocalStorage = () => {
   isBrowser && localStorage.removeItem("accessToken");
-  isBrowser && localStorage.removeItem("accessToken");
+  isBrowser && localStorage.removeItem("refreshToken");
 };
 ////
 export const checkAndRefreshToken = async (param?: {
   onError?: () => void;
   onSuccess?: () => void;
+  force?: boolean;
 }) => {
   // Khong nen dua logic lay access vs refresh token ra khoi cai function 'checkAndRefreshToken'
   // Vi de moi lan ma checkAndRefreshToken() duoc goi thi chung ta se co mot access va refresh token moi
@@ -84,16 +84,16 @@ export const checkAndRefreshToken = async (param?: {
 
   if (decodedRefreshToken.exp <= now) {
     removeTokenFromLocalStorage();
-    param?.onError && param.onError();
-    return;
+    return param?.onError && param.onError();
   }
   // Vi du access token cua chung ta co thoi gian het han la 10s
   // thi minh se kiem tra con 1/3 thoi gian (3s) thi minh se cho refresh token lai
   // thoi gian con lai se tinh dua tren cong thuc :decodedAccessToken.exp - now
   // thoi gian het han cua access token dua tren cong thuc : decodedAccessToken - decodeAccessToken.iat
   if (
+    param?.force ||
     decodedAccessToken.exp - now <
-    (decodedAccessToken.exp - decodedAccessToken.iat) / 3
+      (decodedAccessToken.exp - decodedAccessToken.iat) / 3
   ) {
     // goi api refresh token
     try {
@@ -208,4 +208,15 @@ export const OrderStatusIcon = {
   [OrderStatus.Rejected]: BookX,
   [OrderStatus.Delivered]: Truck,
   [OrderStatus.Paid]: HandCoins,
+};
+export const wrapServerApi = async <T>(fn: () => Promise<T>) => {
+  let result = null;
+  try {
+    result = await fn();
+  } catch (error: any) {
+    if (error.digest?.includes("NEXT_REDIRECT")) {
+      throw error;
+    }
+  }
+  return result;
 };
