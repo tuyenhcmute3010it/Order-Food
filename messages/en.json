@@ -9,5 +9,10 @@
     "title": "Switch Language",
     "en": "English",
     "vi": "Vietnamese"
+  },
+  "ErrorMessage": {
+    "invalidEmail": "Invalid Email",
+    "required": "This field  is required",
+    "invalidPassword": "This Password must at lest 6 character"
   }
 }

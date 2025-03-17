@@ -22,6 +22,7 @@ import { useAppContext } from "@/components/app-provider";
 import envConfig from "@/config";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
+import { boolean } from "zod";
 const getOauthGoogleUrl = () => {
   const rootUrl = "https://accounts.google.com/o/oauth2/v2/auth";
   const options = {
@@ -43,6 +44,7 @@ const googleOauthUrl = getOauthGoogleUrl();
 
 export default function LoginForm() {
   const t = useTranslations("Login");
+  const errorMessageT = useTranslations("ErrorMessage");
   const loginMutation = useLoginMutation();
   const router = useRouter();
   const [isAuth, setIsAuth] = useState(false);
@@ -96,7 +98,7 @@ export default function LoginForm() {
               <FormField
                 control={form.control}
                 name="email"
-                render={({ field }) => (
+                render={({ field, formState: { errors } }) => (
                   <FormItem>
                     <div className="grid gap-2">
                       <Label htmlFor="email">Email</Label>
@@ -107,7 +109,10 @@ export default function LoginForm() {
                         required
                         {...field}
                       />
-                      <FormMessage />
+                      <FormMessage>
+                        {Boolean(errors.email?.message) &&
+                          errorMessageT(errors.email?.message as any)}
+                      </FormMessage>
                     </div>
                   </FormItem>
                 )}
@@ -115,7 +120,7 @@ export default function LoginForm() {
               <FormField
                 control={form.control}
                 name="password"
-                render={({ field }) => (
+                render={({ field, formState: { errors } }) => (
                   <FormItem>
                     <div className="grid gap-2">
                       <div className="flex items-center">
@@ -127,7 +132,10 @@ export default function LoginForm() {
                         required
                         {...field}
                       />
-                      <FormMessage />
+                      <FormMessage>
+                        {Boolean(errors.password?.message) &&
+                          errorMessageT(errors.password?.message as any)}
+                      </FormMessage>
                     </div>
                   </FormItem>
                 )}

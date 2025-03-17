@@ -1,5 +1,5 @@
 import dishesApiRequest from "@/apiRequests/dish";
-import { formatCurrency } from "@/lib/utils";
+import { formatCurrency, generateSlugUrl } from "@/lib/utils";
 import { DishListResType } from "@/schemaValidations/dish.schema";
 import Image from "next/image";
 import Link from "next/link";
@@ -46,7 +46,10 @@ export default async function Home() {
             <div className="flex gap-4 w" key={dish.id}>
               <div className="flex-shrink-0">
                 <Link
-                  href={`/dishes/${dish.id}`}
+                  href={`/dishes/${generateSlugUrl({
+                    name: dish.name,
+                    id: dish.id,
+                  })}`}
                   className="flex items-center gap-2 text-lg font-semibold md:text-base"
                 >
                   <Image

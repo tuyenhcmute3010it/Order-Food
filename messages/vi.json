@@ -9,5 +9,10 @@
     "title": "Chuyển ngôn ngữ",
     "en": "Tiếng Anh",
     "vi": "Tiếng Việt"
+  },
+  "ErrorMessage": {
+    "invalidEmail": "Email Không Xác Định",
+    "required": "Trường này bắt buộc nhập",
+    "invalidPassword": "Mật khẩu bắt buộc phải có 6 kí tự"
   }
 }
