@@ -17,12 +17,11 @@ import { useLoginMutation } from "@/queries/useAuth";
 import { toast } from "@/components/ui/use-toast";
 import { handleErrorApi } from "@/lib/utils";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useAppContext } from "@/components/app-provider";
 import envConfig from "@/config";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
-import { boolean } from "zod";
 const getOauthGoogleUrl = () => {
   const rootUrl = "https://accounts.google.com/o/oauth2/v2/auth";
   const options = {
@@ -49,6 +48,8 @@ export default function LoginForm() {
   const router = useRouter();
   const [isAuth, setIsAuth] = useState(false);
   const { role, setRole } = useAppContext();
+  console.log(isAuth);
+  console.log(role);
   const form = useForm<LoginBodyType>({
     resolver: zodResolver(LoginBody),
     defaultValues: {

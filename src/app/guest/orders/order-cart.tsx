@@ -9,9 +9,7 @@ import {
   PayGuestOrdersResType,
   UpdateOrderResType,
 } from "@/schemaValidations/order.schema";
-import { Description } from "@radix-ui/react-toast";
 import Image from "next/image";
-import { title } from "process";
 import { useEffect, useMemo } from "react";
 
 export default function OrdersCart() {

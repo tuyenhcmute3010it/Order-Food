@@ -1,8 +1,6 @@
-import dishesApiRequest from "@/apiRequests/dish";
-import { formatCurrency, wrapServerApi } from "@/lib/utils";
+import { formatCurrency } from "@/lib/utils";
 import { DishResType } from "@/schemaValidations/dish.schema";
 import Image from "next/image";
-import Link from "next/link";
 
 export default async function DishDetail({
   dish,
@@ -29,6 +27,7 @@ export default async function DishDetail({
         width={300}
         quality={100}
         className="object-cover w-[300px] h-[300px] rounded-md"
+        title={dish.name}
       />
       <p>{dish.description}</p>
     </div>

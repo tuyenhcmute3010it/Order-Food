@@ -10,12 +10,6 @@ import {
   UpdateOrderBodyType,
   UpdateOrderResType,
 } from "@/schemaValidations/order.schema";
-import {
-  CreateTableBodyType,
-  TableListResType,
-  TableResType,
-  UpdateTableBodyType,
-} from "@/schemaValidations/table.schema";
 import queryString from "query-string";
 const orderApiRequest = {
   createOrders: (body: CreateOrdersBodyType) =>

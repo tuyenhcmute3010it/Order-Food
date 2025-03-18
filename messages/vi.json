@@ -1,9 +1,11 @@
 {
   "HomePage": {
-    "title": "Nhà hàng Savannah"
+    "title": "Nhà hàng Savannah",
+    "description": "Vị Ngon Trọn VỊ"
   },
   "Login": {
-    "title": "Đăng Nhập"
+    "title": "Đăng Nhập",
+    "header": "Đăng Nhập | Nhà hàng Savannah"
   },
   "SwitchLanguage": {
     "title": "Chuyển ngôn ngữ",

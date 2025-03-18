@@ -4,10 +4,18 @@ import { DishListResType } from "@/schemaValidations/dish.schema";
 import Image from "next/image";
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
+import { Metadata } from "next";
 
-export default async function Home() {
-  let dishList: DishListResType["data"] = [];
+export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("HomePage");
+  return {
+    title: t("title"),
+    description: t("description"),
+  };
+}
+export default async function Home() {
+  const t = await getTranslations("HomePage");
+  let dishList: DishListResType["data"] = [];
   try {
     const result = await dishesApiRequest.list();
     const {

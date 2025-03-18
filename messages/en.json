@@ -1,9 +1,11 @@
 {
   "HomePage": {
-    "title": "Savannah Restaurant!"
+    "title": "Savannah Restaurant!",
+    "description": "Good"
   },
   "Login": {
-    "title": "Login"
+    "title": "Login",
+    "header": "Login | Savannah Restaurant"
   },
   "SwitchLanguage": {
     "title": "Switch Language",

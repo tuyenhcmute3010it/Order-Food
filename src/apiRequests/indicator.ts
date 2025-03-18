@@ -3,7 +3,6 @@ import {
   DashboardIndicatorQueryParamsType,
   DashboardIndicatorResType,
 } from "@/schemaValidations/indicator.schema";
-import { getDate, toDate } from "date-fns";
 import queryString from "query-string";
 
 const indicatorApiRequest = {

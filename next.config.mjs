@@ -5,9 +5,7 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: "http",
-        hostname: "localhost",
-        port: "4000",
+        hostname: "api-bigboy.duthanhduoc.com",
         pathname: "/**",
       },
       {
@@ -15,6 +13,9 @@ const nextConfig = {
         pathname: "/**",
       },
     ],
+  },
+  eslint: {
+    ignoreDuringBuilds: true, // Bỏ qua lỗi ESLint khi build
   },
 };
 

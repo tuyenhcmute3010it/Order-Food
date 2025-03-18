@@ -3,7 +3,6 @@ import { useAppContext } from "@/components/app-provider";
 import { toast } from "@/components/ui/use-toast";
 import { decodeToken } from "@/lib/utils";
 import { useSetTokenToCookieMutation } from "@/queries/useAuth";
-import { access } from "fs";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef } from "react";
 export default function OauthPage() {

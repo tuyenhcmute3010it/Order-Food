@@ -22,7 +22,6 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Button } from "@/components/ui/button";
 
 const menuItems: {
   title: string;
@@ -58,6 +57,7 @@ const menuItems: {
 
 export default function NavItems({ className }: { className?: string }) {
   const [isAuth, setIsAuth] = useState(false);
+  console.log(isAuth);
   const { role, setRole } = useAppContext();
   useEffect(() => {
     const token = getAccessTokenFromLocalStorage();

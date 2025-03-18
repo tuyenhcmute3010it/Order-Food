@@ -1,8 +1,6 @@
 "use client";
 import Image from "next/image";
-import { Minus, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { useGetDishList } from "@/queries/useDish";
 import { cn, formatCurrency, handleErrorApi } from "@/lib/utils";
 import Quantity from "./quantity";

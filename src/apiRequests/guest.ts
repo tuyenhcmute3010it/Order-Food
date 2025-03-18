@@ -1,7 +1,5 @@
 import http from "@/lib/http";
 import {
-  LoginBodyType,
-  LoginResType,
   LogoutBodyType,
   RefreshTokenBodyType,
   RefreshTokenResType,
@@ -13,7 +11,6 @@ import {
   GuestLoginBodyType,
   GuestLoginResType,
 } from "@/schemaValidations/guest.schema";
-import { CreateOrdersBodyType } from "@/schemaValidations/order.schema";
 
 const guestApiRequest = {
   sLogin: (body: GuestLoginBodyType) =>
