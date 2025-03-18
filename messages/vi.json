@@ -1,7 +1,8 @@
 {
   "HomePage": {
     "title": "Nhà hàng Savannah",
-    "description": "Vị Ngon Trọn VỊ"
+    "description": "Vị Ngon Trọn VỊ",
+    "defaultTitle": "Savannah"
   },
   "Login": {
     "title": "Đăng Nhập",
@@ -11,6 +12,11 @@
     "title": "Chuyển ngôn ngữ",
     "en": "Tiếng Anh",
     "vi": "Tiếng Việt"
+  },
+  "DishDetail": {
+    "title": "Savannah",
+    "description": "Savannah Detail",
+    "notFound": "Dish Not Found"
   },
   "ErrorMessage": {
     "invalidEmail": "Email Không Xác Định",

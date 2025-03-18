@@ -1,16 +1,24 @@
 import dishesApiRequest from "@/apiRequests/dish";
-import { formatCurrency, generateSlugUrl } from "@/lib/utils";
+import {
+  formatCurrency,
+  generateSlugUrl,
+  htmlToTextForDescription,
+} from "@/lib/utils";
 import { DishListResType } from "@/schemaValidations/dish.schema";
 import Image from "next/image";
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { Metadata } from "next";
+import envConfig from "@/config";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("HomePage");
   return {
     title: t("title"),
-    description: t("description"),
+    description: htmlToTextForDescription(t("description")),
+    alternates: {
+      canonical: envConfig.NEXT_PUBLIC_URL,
+    },
   };
 }
 export default async function Home() {

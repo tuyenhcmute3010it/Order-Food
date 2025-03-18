@@ -6,15 +6,27 @@ import { Toaster } from "@/components/ui/toaster";
 import { ThemeProvider } from "@/components/theme-provider";
 import AppProvider from "@/components/app-provider";
 import { NextIntlClientProvider } from "next-intl";
-import { getLocale, getMessages } from "next-intl/server";
+import { getLocale, getMessages, getTranslations } from "next-intl/server";
+import NextTopLoader from "nextjs-toploader";
+import Footer from "@/components/footer";
+import { baseOpenGraph } from "@/shared-metadata";
 const fontSans = FontSans({
   subsets: ["latin"],
   variable: "--font-sans",
 });
-export const metadata: Metadata = {
-  title: "Big Boy Restaurant",
-  description: "The best restaurant in the world",
-};
+
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("HomePage");
+  return {
+    title: {
+      template: `%s | ${t("title")}`,
+      default: t("defaultTitle"),
+    },
+    openGraph: {
+      ...baseOpenGraph,
+    },
+  };
+}
 
 export default async function RootLayout({
   children,
@@ -31,6 +43,7 @@ export default async function RootLayout({
           fontSans.variable
         )}
       >
+        <NextTopLoader showSpinner={false} color="hsl(var(--foreground))" />
         <NextIntlClientProvider messages={messages}>
           <AppProvider>
             <ThemeProvider
@@ -40,6 +53,7 @@ export default async function RootLayout({
               disableTransitionOnChange
             >
               {children}
+              <Footer />
               <Toaster />
             </ThemeProvider>
           </AppProvider>

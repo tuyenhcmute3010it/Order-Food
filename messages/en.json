@@ -1,7 +1,8 @@
 {
   "HomePage": {
     "title": "Savannah Restaurant!",
-    "description": "Good"
+    "description": "Good",
+    "defaultTitle": "Savannah"
   },
   "Login": {
     "title": "Login",
@@ -11,6 +12,11 @@
     "title": "Switch Language",
     "en": "English",
     "vi": "Vietnamese"
+  },
+  "DishDetail": {
+    "title": "Savannah",
+    "description": "Savannah Detail",
+    "notFound": "Dish Not Found"
   },
   "ErrorMessage": {
     "invalidEmail": "Invalid Email",

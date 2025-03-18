@@ -12,6 +12,7 @@ import { TokenPayload } from "@/types/jwt.types";
 import guestApiRequest from "@/apiRequests/guest";
 import { BookX, CookingPot, HandCoins, Loader, Truck } from "lucide-react";
 import slugify from "slugify";
+import { convert } from "html-to-text";
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
@@ -227,4 +228,12 @@ export const generateSlugUrl = ({ name, id }: { name: string; id: number }) => {
 };
 export const getIdFromSlugUrl = (slug: string) => {
   return Number(slug.split("-i.")[1]);
+};
+
+export const htmlToTextForDescription = (html: string) => {
+  return convert(html, {
+    limits: {
+      maxInputLength: 140,
+    },
+  });
 };

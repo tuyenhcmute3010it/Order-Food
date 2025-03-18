@@ -22,6 +22,7 @@ import { useAppContext } from "@/components/app-provider";
 import envConfig from "@/config";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
+import { LoaderCircle } from "lucide-react";
 const getOauthGoogleUrl = () => {
   const rootUrl = "https://accounts.google.com/o/oauth2/v2/auth";
   const options = {
@@ -142,6 +143,9 @@ export default function LoginForm() {
                 )}
               />
               <Button type="submit" className="w-full">
+                {loginMutation.isPending && (
+                  <LoaderCircle className="w-5 h-5 animate-spin" />
+                )}
                 {t("title")}
               </Button>
               <Link href={googleOauthUrl}>
